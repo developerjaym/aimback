@@ -64,7 +64,50 @@
 			"response": []
 		},
 		{
+			"name": "Sign Up Iris",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"iris\",\n    \"password\": \"1234567890\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Sign In Jay",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"jay_token\", jsonData.accessToken);",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -101,7 +144,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNjYxODEwMDY5LCJpYXQiOjE2NjEyMDUyNjl9.FBFfubAojNazcEppUiDGO6awWmv65W-ERBjSg_K0CHCkD3ftOin67h01k8HJ2SRuJA_WnfDV2kSaWMnkkTdkSw",
+							"value": "{{jay_token}}",
 							"type": "string"
 						}
 					]
@@ -133,23 +176,23 @@
 			"response": []
 		},
 		{
-			"name": "Create Message For Conversation As Jay",
+			"name": "Add Iris to Conversation",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNjYxODEwMDY5LCJpYXQiOjE2NjEyMDUyNjl9.FBFfubAojNazcEppUiDGO6awWmv65W-ERBjSg_K0CHCkD3ftOin67h01k8HJ2SRuJA_WnfDV2kSaWMnkkTdkSw",
+							"value": "{{jay_token}}",
 							"type": "string"
 						}
 					]
 				},
-				"method": "POST",
+				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"message\": \"Goodbye World\"\n}",
+					"raw": "{\n    \"userIds\": [3]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -157,7 +200,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/conversations/4/messages",
+					"raw": "http://localhost:8080/api/conversations/1/users",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -166,7 +209,78 @@
 					"path": [
 						"api",
 						"conversations",
-						"4",
+						"1",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Conversations for User 1",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jay_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/conversations",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"conversations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Message For Conversation As Jay",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jay_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"content\": \"Goodbye World\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/conversations/1/messages",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"conversations",
+						"1",
 						"messages"
 					]
 				}
@@ -181,7 +295,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNjYxODEwMDY5LCJpYXQiOjE2NjEyMDUyNjl9.FBFfubAojNazcEppUiDGO6awWmv65W-ERBjSg_K0CHCkD3ftOin67h01k8HJ2SRuJA_WnfDV2kSaWMnkkTdkSw",
+							"value": "{{jay_token}}",
 							"type": "string"
 						}
 					]
@@ -189,7 +303,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/conversations/4/messages",
+					"raw": "http://localhost:8080/api/conversations/1/messages",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -198,12 +312,26 @@
 					"path": [
 						"api",
 						"conversations",
-						"4",
+						"1",
 						"messages"
 					]
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Get All Users",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "jay_token",
+			"value": ""
 		}
 	]
 }

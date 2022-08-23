@@ -1,6 +1,7 @@
 package com.jaymansmann.chat.controller.auth;
 
 import java.net.URI;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -64,5 +65,10 @@ public class AuthController {
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Long id, Authentication authentication) {
         this.authService.deleteById(id, (UserPrincipal) authentication.getPrincipal());
+    }
+
+    @GetMapping
+    public List<UserDTO> getAll() {
+        return this.authService.getAll();
     }
 }

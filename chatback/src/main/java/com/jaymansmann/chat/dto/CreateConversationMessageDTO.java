@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class CreateConversationMessageDTO {
-    private String message;
+    private String content;
 }

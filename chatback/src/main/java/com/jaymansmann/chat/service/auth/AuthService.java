@@ -43,7 +43,7 @@ public class AuthService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
     }
 
-    public UserDTO signUp(@Valid SignUpRequest signUpRequest) {
+    public UserDTO signUp(SignUpRequest signUpRequest) {
 
         if(existsByUsername(signUpRequest.getUsername())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT);
@@ -70,6 +70,10 @@ public class AuthService {
 
     public List<User> getUsersByIds(Iterable<Long> ids) {
         return userRepository.findAllById(ids);
+    }
+
+    public List<UserDTO> getAll() {
+        return userRepository.findAll().stream().map(user -> mapper.map(user, UserDTO.class)).toList();
     }
 }
 
